@@ -2,6 +2,8 @@
 //HOME INPUTS
 export interface homeInputs {
   searchInput: string;
+  alphabet: string[];
+  active: string;
 }
 // COCKTAILS BY NAME SEARCH
 export interface RestApiCocktailByName {

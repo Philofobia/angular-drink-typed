@@ -4,10 +4,12 @@ import { DetailsComponent } from './pages/details/details.component';
 import { HomeComponent } from './pages/home/home.component';
 
 const routes: Routes = [
- { path: "home", component: HomeComponent },
- { path: "home/:search", component: HomeComponent},
+ { path: "home/A", component: HomeComponent },
+ { path: "home/:letterPag/:search", component: HomeComponent},
+ { path: 'home/:letterPag', component: HomeComponent },
  { path: "drink/:idDrink", component: DetailsComponent },
- { path: "", redirectTo: "home", pathMatch: 'full' },
+ { path: "home", redirectTo: "home/A", pathMatch: 'full' },
+ { path: "", redirectTo: "home/A", pathMatch: 'full' },
  { path: "**", component: HomeComponent },
 ];
 

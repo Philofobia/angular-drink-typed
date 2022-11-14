@@ -13,7 +13,7 @@
   <button
     type="button"
     class="btn btn-outline-primary"
-    [routerLink]="'/home/' + jsonIn.searchInput"
+    [routerLink]="'/home/' + jsonIn.active + '/' + jsonIn.searchInput"
   >
     SEARCH
   </button>
@@ -21,6 +21,12 @@
 <hr />
 <!-- LISTA SEARCH -->
 <div class="row">
+  <h3
+    class="text-center"
+    *ngIf="drinksList.length === 0 && jsonIn.searchInput === ''"
+  >
+    NON ESISTONO DRINK CON QUESTO NOME.
+  </h3>
   <div class="col-md-6">
     <ul class="list-group">
       <app-drink-li
@@ -41,5 +47,43 @@
         [drink]="drink"
       ></app-drink-li>
     </ul>
+  </div>
+</div>
+<hr />
+<h2 class="text-center">DRINKS BY LETTER</h2>
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li
+      class="page-item"
+      *ngFor="let letter of jsonIn.alphabet"
+      [routerLink]="'/home/' + letter + '/' + jsonIn.searchInput"
+      [class.active]="jsonIn.active === letter"
+      style="cursor: pointer"
+    >
+      <a class="page-link">{{ letter }}</a>
+    </li>
+  </ul>
+</nav>
+<h3 class="text-center" *ngIf="drinkLetterList.length === 0">
+  NON ESISTONO DRINK CHE INIZIANO CON QUESTA LETTERA.
+</h3>
+<div class="d-flex flex-row flex-wrap justify-content-between">
+  <div
+    *ngFor="let drink of drinkLetterList"
+    style="width: 15rem; cursor: pointer"
+    [routerLink]="'/drink/' + drink.id"
+  >
+    <div class="card m-2" [id]="drink.name">
+      <img
+        [src]="drink.image"
+        class="card-img-top"
+        width="20"
+        [alt]="drink.name"
+      />
+      <div class="card-body">
+        <h5 class="card-title">{{ drink.name }}</h5>
+        <p class="card-text">Categoria: {{ drink.category }}</p>
+      </div>
+    </div>
   </div>
 </div>
