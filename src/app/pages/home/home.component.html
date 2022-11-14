@@ -1,0 +1,45 @@
+<h1 class="text-center mt-3">GET DRUNK!</h1>
+<div class="input-group mt-3">
+  <input
+    type="search"
+    class="form-control rounded"
+    placeholder="Search a drink by its name"
+    aria-label="Search"
+    aria-describedby="search-addon"
+    name="searchDrink"
+    id="searchDrink"
+    [(ngModel)]="jsonIn.searchInput"
+  />
+  <button
+    type="button"
+    class="btn btn-outline-primary"
+    [routerLink]="'/home/' + jsonIn.searchInput"
+  >
+    SEARCH
+  </button>
+</div>
+<hr />
+<!-- LISTA SEARCH -->
+<div class="row">
+  <div class="col-md-6">
+    <ul class="list-group">
+      <app-drink-li
+        *ngFor="let drink of drinksList"
+        [drink]="drink"
+        [showButton]="true"
+        [selected]="drink.selected"
+        (handleCount)="handleCartParent(drink, $event)"
+      ></app-drink-li>
+    </ul>
+  </div>
+  <!-- LISTA CARRELLO -->
+  <div class="col-md-6">
+    <ul class="list-group">
+      <app-drink-li
+        *ngFor="let drink of cartList"
+        [showButton]="false"
+        [drink]="drink"
+      ></app-drink-li>
+    </ul>
+  </div>
+</div>

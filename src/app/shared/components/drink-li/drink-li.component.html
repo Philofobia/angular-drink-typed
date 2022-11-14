@@ -1,0 +1,28 @@
+<li
+  class="list-group-item d-flex justify-content-between align-items-center row"
+  [class.bg-success]="selected"
+>
+  <div class="col-md-9">
+    {{ drink.name }}
+  </div>
+  <div class="col-md-3">
+    <div class="image-parent">
+      <img
+        [src]="drink.image + '/preview'"
+        class="img-fluid drinkPic"
+        [alt]="drink.name"
+      />
+    </div>
+  </div>
+  <div class="col-md text-center" *ngIf="showButton">
+    <button type="button" class="btn btn-primary" style="margin: 5px" [routerLink]="'/drink/' + drink.id">
+      DETAILS
+    </button>
+    <button type="button" class="btn btn-success" style="margin: 5px" (click)="handleCart(true)">
+      ADD
+    </button>
+    <button type="button" class="btn btn-danger" style="margin: 5px" (click)="handleCart(false)">
+      REMOVED
+    </button>
+  </div>
+</li>
