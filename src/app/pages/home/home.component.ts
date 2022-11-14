@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CocktailByName, CocktailByNameBool, homeInputs } from 'src/app/core/models';
 import { ApiService } from 'src/app/_services/api.service';
 
@@ -75,6 +75,7 @@ export class HomeComponent implements OnInit {
   };
   handleLetterPagination(): void {
     this.drinkLetterList = []
+    console.log("hello")
     this.apiService
       .getCocktailByFirstLetter(this.jsonIn.active)
       .subscribe((response) => {
