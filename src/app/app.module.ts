@@ -13,6 +13,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { DrinkLiComponent } from './shared/components/drink-li/drink-li.component';
 import { DetailsComponent } from './pages/details/details.component';
 import { IngredientsComponent } from './pages/ingredients/ingredients.component';
+import { DrinkIngListComponent } from './pages/ingredients/drink-ing-list/drink-ing-list.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { IngredientsComponent } from './pages/ingredients/ingredients.component'
     DrinkLiComponent,
     DetailsComponent,
     IngredientsComponent,
+    DrinkIngListComponent,
   ],
   imports: [
     BrowserModule,

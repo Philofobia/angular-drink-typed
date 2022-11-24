@@ -7,6 +7,7 @@ import { HomeDrinkByFirstLetterResolver } from './pages/home/drinkLetter.resolve
 import { SearchResolver } from './pages/home/search.resolver';
 import { IngredientsComponent } from './pages/ingredients/ingredients.component';
 import { IngrDetailsResolver } from './pages/ingredients/ingr-details.resolver';
+import { IngDescDrinkResolver } from './pages/ingredients/drink-ing-list/ing-desc-drink.resolver';
 
 const routes: Routes = [
   {
@@ -32,13 +33,20 @@ const routes: Routes = [
     },
   },
   {
-    path: 'ingredient/:ingredient',
+    path: 'ingredient',
     component: IngredientsComponent,
     resolve: {
       ingredient: IngrDetailsResolver,
     },
   },
-  { path: 'ingredient', redirectTo: 'ingredient/vodka', pathMatch: 'full' },
+  {
+    path: 'ingredient/:ingredient',
+    component: IngredientsComponent,
+    resolve: {
+      ingredient: IngrDetailsResolver,
+      ingDescr: IngDescDrinkResolver,
+    },
+  },
   { path: 'home', redirectTo: 'home/A', pathMatch: 'full' },
   { path: '', redirectTo: 'home/A', pathMatch: 'full' },
   { path: '**', component: HomeComponent },

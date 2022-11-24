@@ -32,8 +32,6 @@ export class HomeComponent implements OnInit {
     });
     this.route.data.subscribe(({ letterPag, search }) => {
       this.drinkLetterList = letterPag;
-      console.log(letterPag);
-      console.log(search);
       if (search !== undefined && search !== null) {
         this.drinksList = search.map((obj: CocktailByName) => ({
           ...obj,

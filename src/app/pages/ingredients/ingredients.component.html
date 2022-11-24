@@ -1,1 +1,16 @@
-<p>ingredients works!</p>
+<h1 class="text-center my-2">Ingredients Page</h1>
+<select
+  class="form-select"
+  aria-label="searchInputIng"
+  name="searchInputDrink"
+  id="searchInputDrink"
+>
+  <option
+    *ngFor="let ingr of ingredients"
+    [value]="ingr.ingredient"
+    [routerLink]="'/ingredient/' + ingr.ingredient"
+  >
+    {{ ingr.ingredient }}
+  </option>
+</select>
+<app-drink-ing-list></app-drink-ing-list>

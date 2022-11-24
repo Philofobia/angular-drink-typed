@@ -135,9 +135,8 @@ export interface DrinksByIng {
   id: string;
 }
 
-//RESOLVE OBJECT
+//RESOLVE OBJECT FORKJOIN DEATAILS + DRINKS LIST
 export interface ResolveIngredientObject {
-  ingredientsList: ListIngredients[];
   ingredientDetails: { strDescription: string };
   ingredientDrinks: DrinksByIng[];
 }

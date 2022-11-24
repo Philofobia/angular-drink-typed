@@ -1,0 +1,23 @@
+<h3 class="text-center" *ngIf="sameIngDrinks.length === 0">Seleziona un ingrediente per leggerne la descrizione e vederne i drink.</h3>
+<div class="my-4">
+  <p class="text-center" *ngIf="ingDescr !== null">{{ ingDescr }}</p>
+  <p class="text-center" *ngIf="ingDescr === null">Ci spiace comunicare che la descrizione è mancante.</p>
+</div>
+<hr />
+<div
+  class="d-flex flex-row flex-wrap justify-content-center"
+  *ngIf="sameIngDrinks.length !== 0"
+>
+  <div
+    class="card m-2"
+    style="width: 30rem"
+    style="width: 15rem; cursor: pointer"
+    *ngFor="let drink of sameIngDrinks"
+    [routerLink]="'/drink/' + drink.id"
+  >
+    <img class="card-img-top" [src]="drink.image" [alt]="drink.name" />
+    <div class="card-body">
+      <h5 class="card-title">{{ drink.name }}</h5>
+    </div>
+  </div>
+</div>
