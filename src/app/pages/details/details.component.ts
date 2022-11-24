@@ -2,12 +2,11 @@ import {
   Component,
   OnInit,
   ViewChild,
-  ElementRef,
-  AfterViewInit,
+  ElementRef
 } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { DrinkById } from 'src/app/core/models';
-import { ApiService } from 'src/app/_services/api.service';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 @Component({
   selector: 'app-details',
@@ -15,7 +14,7 @@ import { ApiService } from 'src/app/_services/api.service';
   styleUrls: ['./details.component.scss'],
 })
 export class DetailsComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
+  constructor(private route: ActivatedRoute) {}
   drink: DrinkById = {
     idDrink: '',
     name: '',
@@ -26,18 +25,18 @@ export class DetailsComponent implements OnInit {
     drinkInstruction: [],
   };
   switchLanguage: boolean[] = [];
+  @BlockUI() blockUI!: NgBlockUI; 
   @ViewChild('drinkDescr') drinkDescrizione!: ElementRef;
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((res) => {
-      const id = res.get('idDrink');
-      if (!!id) {
-        this.apiService.getCocktailById(id).subscribe((res) => {
-          this.drink = res;
-          setTimeout(() =>this.changeLanguage(0), 100)
-        });
-      }
+    this.route.data.subscribe(({ idDrink }) => {
+      this.drink = idDrink;
     });
+    setTimeout(() => this.changeLanguage(0), 100);
+  }
+
+  customMessage() {
+    this.blockUI.start('Updating...'); // "Updating..." will display
   }
 
   changeLanguage = (input: number) => {

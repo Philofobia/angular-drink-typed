@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CocktailByName, CocktailByNameBool, homeInputs } from 'src/app/core/models';
+import {
+  CocktailByName,
+  CocktailByNameBool,
+  homeInputs,
+} from 'src/app/core/models';
 import { ApiService } from 'src/app/_services/api.service';
 
 @Component({
@@ -10,30 +14,33 @@ import { ApiService } from 'src/app/_services/api.service';
 })
 export class HomeComponent implements OnInit {
   constructor(private apiService: ApiService, private route: ActivatedRoute) {}
+  //sono certo che abbia un valore anche se non
+  // izianilizzata subito
   drinkLetterList: CocktailByName[] = [];
   drinksList: CocktailByNameBool[] = [];
   cartList: CocktailByNameBool[] = [];
   jsonIn: homeInputs = {
     searchInput: '',
     alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
-    active: ''
+    active: 'A',
   };
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      const letter = params.get('letterPag')
-      const search = params.get('search');
-      if (!!search) {
-        this.jsonIn.searchInput = search;
-        this.handleSearchDrinksByName();
+      const letter = params.get('letterPag');
+      if (letter !== null) this.jsonIn.active = letter;
+    });
+    this.route.data.subscribe(({ letterPag, search }) => {
+      this.drinkLetterList = letterPag;
+      console.log(letterPag);
+      console.log(search);
+      if (search !== undefined && search !== null) {
+        this.drinksList = search.map((obj: CocktailByName) => ({
+          ...obj,
+          selected: false,
+        }));
+        this.cartCompareList();
       }
-      this.jsonIn.searchInput = ""
-      if (letter !== null) {
-        this.jsonIn.active = letter;
-      } else {
-        this.jsonIn.active = 'A';
-      }
-      this.handleLetterPagination(); 
     });
   }
 
@@ -47,15 +54,6 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  handleSearchDrinksByName = () => {
-    this.drinksList = []
-    this.apiService
-      .getDrinksByName(this.jsonIn.searchInput)
-      .subscribe((res) => {
-        this.drinksList = res.map((obj) => ({ ...obj, selected: false }));
-        this.cartCompareList();
-      });
-  };
   handleCartParent = (drink: CocktailByNameBool, $event: boolean) => {
     if (this.cartList.length < 5) {
       if ($event) {
@@ -73,13 +71,4 @@ export class HomeComponent implements OnInit {
       }
     }
   };
-  handleLetterPagination(): void {
-    this.drinkLetterList = []
-    console.log("hello")
-    this.apiService
-      .getCocktailByFirstLetter(this.jsonIn.active)
-      .subscribe((response) => {
-        this.drinkLetterList = response;
-      });
-  }
 }

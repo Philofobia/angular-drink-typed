@@ -1,4 +1,4 @@
-import { RestApidrinksByName, RestApiDrinkById, DrinkById } from './models';
+import { RestApidrinksByName, RestApiDrinkById, DrinkById, RestApiListIngredients } from './models';
 
 export const sortingDrinkByName = (
   query: RestApidrinksByName[]
@@ -62,3 +62,8 @@ export const handleMapping = (drink: RestApiDrinkById): DrinkById => {
 
   return cleanDrink as DrinkById;
 };
+
+export const sortIngredientListByLetter = (query: RestApiListIngredients[]): RestApiListIngredients[] => {
+  const sortedIngredientList = query.sort((a, b) => a.strIngredient1.localeCompare(b.strIngredient1));
+  return sortedIngredientList;
+}

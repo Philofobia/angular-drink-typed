@@ -95,3 +95,49 @@ interface drinkInstruction {
   name?: string;
   langDes?: string;
 }
+
+// INGREDIENTS PAGE //
+// LIST OF ALL INGREDIENTS
+
+export interface RestApiListIngDrinks {
+  drinks: RestApiListIngredients[];
+}
+
+export interface RestApiListIngredients {
+  strIngredient1: string;
+}
+
+export interface ListIngredients {
+  ingredient: string;
+}
+
+//DETAILS SPECIFIC INGREDIENT
+export interface RestApiIngredient {
+  ingredients: {
+    strDescription: string;
+  }[];
+}
+
+//DRINKS BY INGREDIENT
+export interface RestApiDrinkByIngDrinks {
+  drinks: RestApiDrinksByIng[];
+}
+
+export interface RestApiDrinksByIng {
+  strDrink: string;
+  strDrinkThumb: string;
+  idDrink: string;
+}
+
+export interface DrinksByIng {
+  name: string;
+  image: string;
+  id: string;
+}
+
+//RESOLVE OBJECT
+export interface ResolveIngredientObject {
+  ingredientsList: ListIngredients[];
+  ingredientDetails: { strDescription: string };
+  ingredientDrinks: DrinksByIng[];
+}

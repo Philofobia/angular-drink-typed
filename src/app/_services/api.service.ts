@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, filter } from 'rxjs';
+import { map, filter, catchError } from 'rxjs';
 import {
   RestApiCocktailByName,
   RestApidrinksByName,
@@ -8,20 +8,30 @@ import {
   RestApiCocktailById,
   RestApiDrinkById,
   DrinkById,
+  RestApiListIngredients,
+  RestApiListIngDrinks,
+  ListIngredients,
+  RestApiIngredient,
+  RestApiDrinkByIngDrinks,
+  RestApiDrinksByIng,
+  DrinksByIng,
 } from '../core/models';
-import { sortingDrinkByName, handleMapping } from '../core/logicFunctions';
+import {
+  sortingDrinkByName,
+  handleMapping,
+  sortIngredientListByLetter,
+} from '../core/logicFunctions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
   constructor(private httpClient: HttpClient) {}
+  BASE_URL = 'https://www.thecocktaildb.com/api/json/v1/1';
 
   getDrinksByName = (query: string) => {
     return this.httpClient
-      .get<RestApiCocktailByName>(
-        `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${query}`
-      )
+      .get<RestApiCocktailByName>(`${this.BASE_URL}/search.php?s=${query}`)
       .pipe(
         filter((res) => res.drinks !== null),
         map((res: RestApiCocktailByName) => {
@@ -43,9 +53,7 @@ export class ApiService {
 
   getCocktailById = (id: string) => {
     return this.httpClient
-      .get<RestApiCocktailById>(
-        `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`
-      )
+      .get<RestApiCocktailById>(`${this.BASE_URL}/lookup.php?i=${id}`)
       .pipe(
         map((res: RestApiCocktailById) => {
           const drinkApi: RestApiDrinkById = res.drinks[0];
@@ -58,10 +66,8 @@ export class ApiService {
   getCocktailByFirstLetter = (firstLetter: string) => {
     return this.httpClient
       .get<RestApiCocktailByName>(
-        `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${firstLetter}`
+        `${this.BASE_URL}/search.php?f=${firstLetter}`
       )
-     // .pipe(filter((res) => res.drinks !== null)) si possono usare più pipe o
-     // mettere i metodi nello stesso pipe
       .pipe(
         filter((res) => res.drinks !== null),
         map((res) => {
@@ -77,6 +83,51 @@ export class ApiService {
             })
           );
           return drink;
+        })
+      );
+  };
+
+  getIngredientsList = () => {
+    return this.httpClient
+      .get<RestApiListIngDrinks>(`${this.BASE_URL}/list.php?i=list`)
+      .pipe(
+        map((res) => {
+          const sortedIngList = sortIngredientListByLetter(res.drinks);
+          const fIngList: ListIngredients[] = sortedIngList.map(
+            (el: RestApiListIngredients) => ({
+              ingredient: el.strIngredient1,
+            })
+          );
+          return fIngList;
+        })
+      );
+  };
+
+  getIngredientDetails = (input: string) => {
+    return this.httpClient
+      .get<RestApiIngredient>(`${this.BASE_URL}/search.php?i=${input}`)
+      .pipe(
+        map((res) => {
+          const ingDescription = res.ingredients[0];
+          return ingDescription;
+        })
+      );
+  };
+
+  getDrinksByIngredients = (input: string) => {
+    return this.httpClient
+      .get<RestApiDrinkByIngDrinks>(`${this.BASE_URL}/filter.php?i=${input}`)
+      .pipe(
+        map((res) => {
+          const RestApiDrinksByIng: RestApiDrinksByIng[] = res.drinks;
+          const DrinksByIng: DrinksByIng[] = RestApiDrinksByIng.map(
+            (el: RestApiDrinksByIng) => ({
+              name: el.strDrink,
+              image: el.strDrinkThumb,
+              id: el.idDrink,
+            })
+          );
+          return DrinksByIng;
         })
       );
   };
